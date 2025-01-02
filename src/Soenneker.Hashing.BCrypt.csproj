@@ -14,7 +14,7 @@
         <AssemblyName>Soenneker.Hashing.BCrypt</AssemblyName>
         <PackageId>Soenneker.Hashing.BCrypt</PackageId>
         <PackageTags>hashing bcrypt util sha hash bcryptutil csharp dotnet c# .net</PackageTags>
-        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2024-2025 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
