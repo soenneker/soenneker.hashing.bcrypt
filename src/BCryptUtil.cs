@@ -16,7 +16,7 @@ public static class BCryptUtil
     /// <returns>The hashed string.</returns>
     public static string Hash(string plainText, int workFactor = 11)
     {
-        plainText.ThrowIfNullOrWhitespace();
+        plainText.ThrowIfNullOrWhiteSpace();
 
         return BC.EnhancedHashPassword(plainText, workFactor);
     }
@@ -29,8 +29,8 @@ public static class BCryptUtil
     /// <returns>True if the plaintext matches the hash; otherwise, false.</returns>
     public static bool Verify(string plainText, string hash)
     {
-        plainText.ThrowIfNullOrWhitespace();
-        hash.ThrowIfNullOrWhitespace();
+        plainText.ThrowIfNullOrWhiteSpace();
+        hash.ThrowIfNullOrWhiteSpace();
 
         return BC.EnhancedVerify(plainText, hash);
     }
