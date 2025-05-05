@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Hashing.BCrypt
+﻿# Contributing to Soenneker.Hashing.BCrypt
 
 We're excited that you're interested in contributing!
 
