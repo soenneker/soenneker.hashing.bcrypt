@@ -1,19 +1,17 @@
 using AwesomeAssertions;
-using Soenneker.Tests.FixturedUnit;
+using Soenneker.Tests.HostedUnit;
 using System;
-using Xunit;
-
 
 namespace Soenneker.Hashing.BCrypt.Tests;
 
-[Collection("Collection")]
-public class BCryptUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class BCryptUtilTests : HostedUnitTest
 {
-    public BCryptUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public BCryptUtilTests(Host host) : base(host)
     {
     }
 
-    [Fact]
+    [Test]
     public void Hash_ShouldGenerateValidHash()
     {
         // Arrange
@@ -27,7 +25,7 @@ public class BCryptUtilTests : FixturedUnitTest
         hash.Should().NotBe(password, "the hash should not match the plain text password");
     }
 
-    [Fact]
+    [Test]
     public void Verify_ShouldReturnTrueForValidPassword()
     {
         // Arrange
@@ -41,7 +39,7 @@ public class BCryptUtilTests : FixturedUnitTest
         isValid.Should().BeTrue("the password matches the hash");
     }
 
-    [Fact]
+    [Test]
     public void Verify_ShouldReturnFalseForInvalidPassword()
     {
         // Arrange
@@ -55,7 +53,7 @@ public class BCryptUtilTests : FixturedUnitTest
         isValid.Should().BeFalse("the password does not match the hash");
     }
 
-    [Fact]
+    [Test]
     public void Hash_ShouldThrowExceptionForNullInput()
     {
         // Arrange
@@ -68,7 +66,7 @@ public class BCryptUtilTests : FixturedUnitTest
         act.Should().Throw<ArgumentException>("a null or empty password is invalid");
     }
 
-    [Fact]
+    [Test]
     public void Verify_ShouldThrowExceptionForNullPassword()
     {
         // Arrange
@@ -82,7 +80,7 @@ public class BCryptUtilTests : FixturedUnitTest
         act.Should().Throw<ArgumentException>("a null or empty password is invalid");
     }
 
-    [Fact]
+    [Test]
     public void Verify_ShouldThrowExceptionForNullHash()
     {
         // Arrange
@@ -96,7 +94,7 @@ public class BCryptUtilTests : FixturedUnitTest
         act.Should().Throw<ArgumentException>("a null or empty hash is invalid");
     }
 
-    [Fact]
+    [Test]
     public void Hash_ShouldRespectCustomWorkFactor()
     {
         // Arrange
