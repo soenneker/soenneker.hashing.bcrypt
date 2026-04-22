@@ -38,7 +38,7 @@ jobs:
         run: dotnet build test/Soenneker.Hashing.BCrypt.Tests/Soenneker.Hashing.BCrypt.Tests.csproj --configuration Release --no-restore --verbosity minimal
 
       - name: Test
-        run: dotnet test test/Soenneker.Hashing.BCrypt.Tests/Soenneker.Hashing.BCrypt.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+        run: dotnet test --project test/Soenneker.Hashing.BCrypt.Tests/Soenneker.Hashing.BCrypt.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
 
       - name: Pack
         run: dotnet pack src/Soenneker.Hashing.BCrypt/Soenneker.Hashing.BCrypt.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
