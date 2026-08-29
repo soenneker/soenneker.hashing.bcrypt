@@ -3,33 +3,32 @@
 [![](https://img.shields.io/nuget/dt/soenneker.hashing.bcrypt.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.hashing.bcrypt/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.hashing.bcrypt/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.hashing.bcrypt/actions/workflows/codeql.yml)
 
-# ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Hashing.BCrypt
-### A utility library for BCrypt hashing and verification
+# Soenneker.Hashing.BCrypt
 
-## Features
-- **Hash passwords**: Securely hash passwords.
-- **Verify passwords**: Check if a password matches a hash.
-- **Custom security**: Adjust the `workFactor` for extra security.
+A utility library for BCrypt hashing and verification.
 
-## Installation
+## Install
 
-```
+```bash
 dotnet add package Soenneker.Hashing.BCrypt
 ```
 
-## Usage
+## Quick start
 
-### Hash a Password
 ```csharp
-string hash = BCryptUtil.Hash("MyPassword");
+using Soenneker.Hashing.BCrypt;
+
+var result = BCryptUtil.Hash("value");
 ```
 
-### Verify a Password
-```csharp
-bool isValid = BCryptUtil.Verify("MyPassword", hash);
-```
+Generates a bcrypt hash for the given plaintext.
 
-### Custom Work Factor
-```csharp
-string hash = BCryptUtil.Hash("MyPassword", workFactor: 12);
-```
+## What you get
+
+- `BCryptUtil` — A utility library for BCrypt hashing and verification.
+
+## API at a glance
+
+| API | What it does | Result / important behavior |
+| --- | --- | --- |
+| `BCryptUtil.Verify(plainText, hash)` | Verifies the given plaintext against a bcrypt hash. | True if the plaintext matches the hash; otherwise, false. |
