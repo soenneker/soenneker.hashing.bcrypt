@@ -1,34 +1,41 @@
 [![](https://img.shields.io/nuget/v/soenneker.hashing.bcrypt.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.hashing.bcrypt/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.hashing.bcrypt/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.hashing.bcrypt/actions/workflows/publish-package.yml)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.hashing.bcrypt/build-and-test.yml?style=for-the-badge&label=build)](https://github.com/soenneker/soenneker.hashing.bcrypt/actions/workflows/build-and-test.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.hashing.bcrypt.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.hashing.bcrypt/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.hashing.bcrypt/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.hashing.bcrypt/actions/workflows/codeql.yml)
 
 # Soenneker.Hashing.BCrypt
 
-A utility library for BCrypt hashing and verification.
+Hashes and verifies passwords with BCrypt.Net-Next’s enhanced bcrypt mode. Enhanced mode pre-hashes the password before bcrypt, avoiding bcrypt’s usual 72-byte input truncation.
 
-## Install
+## Installation
 
 ```bash
 dotnet add package Soenneker.Hashing.BCrypt
 ```
 
-## Quick start
+## Hash and verify
 
 ```csharp
 using Soenneker.Hashing.BCrypt;
 
-var result = BCryptUtil.Hash("value");
+string storedHash = BCryptUtil.Hash(password);
+
+bool valid = BCryptUtil.Verify(candidatePassword, storedHash);
 ```
 
-Generates a bcrypt hash for the given plaintext.
+Each `Hash()` call creates a new random salt and includes the salt and work factor in the returned record. Store that complete string; do not store a separate salt.
 
-## What you get
+The default work factor is 11. It can be selected explicitly:
 
-- `BCryptUtil` — A utility library for BCrypt hashing and verification.
+```csharp
+string storedHash = BCryptUtil.Hash(password, workFactor: 12);
+```
 
-## API at a glance
+Supported work factors are 4 through 16. `Hash()` throws `InvalidOperationException` outside that range, and `Verify()` rejects records embedding an excessive cost before performing expensive work. Benchmark authentication under expected concurrency before increasing the cost.
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `BCryptUtil.Verify(plainText, hash)` | Verifies the given plaintext against a bcrypt hash. | True if the plaintext matches the hash; otherwise, false. |
+## Compatibility
+
+This utility calls `EnhancedHashPassword()` and `EnhancedVerify()`, not BCrypt.Net’s standard password methods. A hash produced here must be verified with enhanced mode; a different bcrypt implementation that hashes the raw password may not interoperate even when the encoded record looks like ordinary bcrypt.
+
+`Verify()` returns `false` for a mismatched password, malformed record, or unsupported work factor. Empty plaintext or hash arguments retain the library’s argument-validation behavior. Rate-limit authentication attempts and never log plaintext passwords.

@@ -1,3 +1,4 @@
+using System;
 using Soenneker.Extensions.String;
 using BC = BCrypt.Net.BCrypt;
 
@@ -8,6 +9,9 @@ namespace Soenneker.Hashing.BCrypt;
 /// </summary>
 public static class BCryptUtil
 {
+    private const int _minWorkFactor = 4;
+    private const int _maxWorkFactor = 16;
+
     /// <summary>
     /// Generates a bcrypt hash for the given plaintext.
     /// </summary>
@@ -17,6 +21,9 @@ public static class BCryptUtil
     public static string Hash(string plainText, int workFactor = 11)
     {
         plainText.ThrowIfNullOrWhiteSpace();
+
+        if (workFactor is < _minWorkFactor or > _maxWorkFactor)
+            throw new InvalidOperationException($"BCrypt work factor must be between {_minWorkFactor} and {_maxWorkFactor}.");
 
         return BC.EnhancedHashPassword(plainText, workFactor);
     }
@@ -32,6 +39,24 @@ public static class BCryptUtil
         plainText.ThrowIfNullOrWhiteSpace();
         hash.ThrowIfNullOrWhiteSpace();
 
-        return BC.EnhancedVerify(plainText, hash);
+        if (!TryGetWorkFactor(hash, out int workFactor) || workFactor is < _minWorkFactor or > _maxWorkFactor)
+            return false;
+
+        try
+        {
+            return BC.EnhancedVerify(plainText, hash);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool TryGetWorkFactor(string hash, out int workFactor)
+    {
+        workFactor = 0;
+
+        return hash.Length == 60 && hash[0] == '$' && hash[1] == '2' && hash[3] == '$' && hash[6] == '$' &&
+               int.TryParse(hash.AsSpan(4, 2), out workFactor);
     }
 }

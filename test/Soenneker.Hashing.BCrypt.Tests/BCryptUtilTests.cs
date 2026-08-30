@@ -107,4 +107,22 @@ public class BCryptUtilTests : HostedUnitTest
         // Assert
         hash.Should().NotBeNullOrEmpty("a hash should still be generated with a custom work factor");
     }
+
+    [Test]
+    public void Verify_ShouldRejectExcessiveEmbeddedWorkFactor()
+    {
+        const string excessiveHash = "$2a$31$......................0123456789012345678901234567890";
+
+        bool result = BCryptUtil.Verify("password", excessiveHash);
+
+        result.Should().BeFalse();
+    }
+
+    [Test]
+    public void Verify_ShouldRejectMalformedHash()
+    {
+        bool result = BCryptUtil.Verify("password", "$2a$11$invalid");
+
+        result.Should().BeFalse();
+    }
 }
