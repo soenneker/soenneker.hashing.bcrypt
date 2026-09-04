@@ -45,6 +45,6 @@
 
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
-        <PackageReference Include="Soenneker.Extensions.String" Version="4.0.737" />
+        <PackageReference Include="Soenneker.Extensions.String" Version="4.0.738" />
     </ItemGroup>
 </Project>
